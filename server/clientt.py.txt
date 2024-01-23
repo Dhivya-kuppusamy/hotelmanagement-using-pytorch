@@ -1,0 +1,22 @@
+import socket
+
+HOST = '127.0.0.1'
+PORT = 12345
+
+with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as client_socket:
+    while True:
+        roll_number = input("Enter a roll number (or 'bye' to quit): ")
+        client_socket.sendto(roll_number.encode(), (HOST, PORT))
+
+        if roll_number.lower() == 'bye':
+            print("Client is closing.")
+            break
+
+        data, addr = client_socket.recvfrom(1024)
+        received_message = data.decode()
+        print("Server:", received_message)
+
+        if received_message.lower() == 'bye':
+            print("Client is closing.")
+            break
+
